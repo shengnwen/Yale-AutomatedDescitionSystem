@@ -1,0 +1,123 @@
+## CS 458/558
+## Fall 2015
+## author: Ronghui Gu
+## email: ronghui.gu@yale.edu
+
+
+###### Description
+This is a sample test for your hw1.
+Since there is no single answer to hw1, this test will only check the function signature.
+Besides the test script, there are also sample programs (hw1_sample.py, hw1_sample.R).
+You can view them as the specification to hw1.
+
+
+###### Specification
+1. sim (trials)
+trials: int, specifying how many games to simulate.
+return: you can decide.
+print: nothing.
+It will generate a file "transcript" contains the matrix of float number.
+You can decide how to print the matrix.
+This "transcript" file is only used in your program, I will not take a look at it.
+
+2. hitme(playerhand, dealerfacecard)
+playerhand, dealerfacecard: int.
+return: boolean, true or false, specifying whether the player should ask for another card or not.
+print: nothing
+It should read the file "transcript" and return the result.
+You should not print anything in this function.
+
+3. play (trials)
+trials: int, specifying how many games to play.
+return: float, the overall winning percentage.
+print: nothing.
+It should call hitme and return the result
+You should not print anything in this function.
+
+
+###### Submission
+1. hw1.py or hw1.R
+2. transcript: the output of Monte Carlo siulation
+3. summary: the summary output of 100,000 game playing trials 
+
+
+###### How to test
+1. Put your hw1.py or hw1.R in the test directory
+2. After that, the test directory should look like
+./hw1.py or ./hw1.R
+./grade_hw1.py
+3. run
+>> python grade_hw1.py
+
+
+###### Dependent
+This test script requires:
+1. "os", "re", "subprocess", "shlex" and "time" package in Python
+2. "Rscript" been installed on the computer
+
+
+
+——About the test script of hw1
+I have posted the test script of hw1.
+
+Title: test_hw1.tar.gz
+http://www.piazza.com/class_profile/get_resource/ieg1lr3qffd4a5/ieufb4rrt896c1
+
+You can view it on the course page: https://piazza.com/yale/fall2015/cpsc458/resources
+
+###### Description
+This is a sample test for your hw1.
+Since there is no single answer to hw1, this test will only check the function signature.
+Besides the test script, there are also sample programs (hw1_sample.py, hw1_sample.R).
+You can view them as the specification to hw1.
+
+
+###### Specification
+1. sim (trials)
+trials: int, specifying how many games to simulate.
+return: you can decide.
+print: nothing.
+It will generate a file "transcript" contains the matrix of float number.
+You can decide how to print the matrix.
+This "transcript" file is only used in your program, I will not take a look at it.
+
+2. hitme(playerhand, dealerfacecard)
+playerhand, dealerfacecard: int.
+return: boolean, true or false, specifying whether the player should ask for another card or not.
+print: nothing
+It should read the file "transcript" and return the result.
+You should not print anything in this function.
+
+3. play (trials)
+trials: int, specifying how many games to play.
+return: float, the overall winning percentage.
+print: nothing.
+It should call hitme and return the result
+You should not print anything in this function.
+
+
+###### Submission
+1. hw1.py or hw1.R
+2. transcript: the output of Monte Carlo simulation
+This file is very important.
+To test your win rate, I will directly call your hitme() function (which will read this transcript file), instead of the play() function.
+3. summary: the summary output of 100,000 game playing trials 
+
+
+###### How to test
+1. Put your hw1.py or hw1.R in the test directory
+2. After that, the test directory should look like
+./hw1.py or ./hw1.R
+./grade_hw1.py
+3. run python grade_hw1.py
+
+###### Performance
+The test script will also check the performance.
+Make sure that your program file only contains the function definition.
+If the program contains "sim(1000000000)", definitely, it will cause time out.
+
+###### Dependent
+This test script requires:
+1. "os", "re", "subprocess", "shlex" and "time" package in Python
+2. "Rscript" been installed on the computer
+hw1

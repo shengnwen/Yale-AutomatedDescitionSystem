@@ -39,10 +39,10 @@ def initiate_hit_table():
     for row in range(0, 25):
         single_row_strategy = []
         if row + 5 < 10:
-            single_row_strategy.append('0A')
+            single_row_strategy.append('-A')
             single_row_strategy.append("0" + str(row + 5))
         elif row + 5 < 21:
-            single_row_strategy.append('0A')
+            single_row_strategy.append('-A')
             single_row_strategy.append(str(row + 5))
         elif row < 24:
             single_row_strategy.append('1A')
@@ -159,9 +159,9 @@ class Hand(object):
 
     def add_card(self, card):
         self.cards.append(card)
-        if card.get_rank() == 'A' and self.aces == False:
+        if card.rank == 'A' and not self.aces:
             self.aces = True
-        elif card.get_rank() == 'A' and self.aces == True:
+        elif 'A' == card.rank and self.aces:
             self.double_aces = True
 
     # get_max_value by considering A = 11 when not bust
@@ -178,6 +178,15 @@ class Hand(object):
             rank = card.get_rank()
             v = VALUES[rank]
             value += v
+        return value
+
+    def get_value_without_aces(self):
+        value = 0
+        for card in self.cards:
+            rank = card.get_rank()
+            if rank == 'A':
+                continue
+            value += VALUES[rank]
         return value
 
 
@@ -252,10 +261,11 @@ def stand_process():
     if finished:
         return None
     val = house_hand.get_value()
+    print("House:" + str(house_hand) + ", val: " + str(val))
     while val < 17:
         new_card = the_deck.deal_card()
         print("House add: " + str(new_card))
-        house_hand.add_card(str(new_card))
+        house_hand.add_card(new_card)
         val = house_hand.get_value()
     if val > 21:
         if player_hand.get_value() > 21:
@@ -281,12 +291,11 @@ def stand_process():
 # simulate game for only 1 trial
 def single_sim():
     global the_deck, player_hand, house_hand, finished, outcome, win
-
+    finished = False
     the_deck = Deck()
     the_deck.shuffle()
     player_hand = Hand()
     house_hand = HouseHand()
-
     # initial state
     # 2 cards can be seen from player
     # 1 card can be seen from house
@@ -300,14 +309,17 @@ def single_sim():
 
     # simulate game process
     # is_hit = True
-    global finished
     if not finished:
         # hit me return true - > hit
         # hit me return false -> stand
-        is_hit = player_hand.cards, house_hand.get_face_card()
+        # is_hit = hitme()
+        is_hit = False
         while not finished and  is_hit:
             hit_process()
-            is_hit = player_hand.cards, house_hand.get_face_card()
+            if finished:
+                break;
+            # is_hit = hitme()
+            is_hit = False
         stand_process()
     print("Player: " + str(player_hand))
     print("House: " + str(house_hand))
@@ -340,6 +352,21 @@ def simulation(trials, is_sim):
                 winNumber += 1
         print("Win Ratio: " + str(winNumber) + " / " + str(total))
 
+def translateRow():
+    global player_hand
+    if player_hand.aces and player_hand.double_aces:
+        return 25
+    elif player_hand.aces and player_hand.get_value_without_aces() < 10:
+        # return player_hand.get_value_without_aces() + 15
+        return player_hand.get_value_without_aces() + 15
+    else:
+        return player_hand.get_value() - 4
+
+def translateCol(face_rank):
+    if face_rank == 'A':
+        return 11
+    else:
+        return int(VALUES[face_rank])
 
 def hitme():
     """returns a boolean value, true or false,
@@ -347,9 +374,20 @@ def hitme():
     another card or not
     """
     global hit_table, player_hand, house_hand
-    face_card = house_hand.get_face_card.get_rank() # 1 - 10
-    aces = player_hand.aces
-
+    face_card = house_hand.get_face_card()
+    face_rank = face_card.rank# 1 - 10
+    print("col" + str(face_rank) + "-" + str(translateCol(face_rank)))
+    print(str(player_hand))
+    print("Row" + str(translateRow()))
+    #print(face_rank)
+    #print("(" + str(player_hand.get_value()) + ", " + str(face_rank) + ") => ")
+    if hit_table[translateRow()][translateCol(face_rank)] == 'H':
+        print("(" + str(player_hand.get_value()) + ", " + str(face_rank) + ") => " + str(True))
+        return True
+    else:
+        print("(" + str(player_hand.get_value()) + ", " + str(face_rank) + ") => " + str(False))
+        return False
+    # access table
     # return hit
 
 
@@ -358,20 +396,16 @@ def hitme():
 def sim(trials):
     simulation(trials, True)
 
+
 def play(trials):
-    win_ratio = 0.5
+    global winNumber, total
     simulation(trials, False)
+    win_ratio = float(winNumber) / total
     print("The winning rate: " + str(win_ratio))
 
 
+
+play(100000)
 # initiate_hit_table()
-# print_hit_table()
-#store_hit_table()
-
-sim(1000)
-play(3)
-
-# play(1000)
-# single_sim()
-# sim(3, True)
-# play(3)
+# sim(1)
+# play(1)

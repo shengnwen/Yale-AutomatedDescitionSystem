@@ -122,6 +122,8 @@ def initiate_hit_table():
                     continue
                 if x <= 11:
                     output.write("1 ")
+                elif x <= 16 and y >= 7:
+                    output.write("1 ")
                 else:
                     output.write("0 ")
             output.write("\n")
@@ -237,7 +239,6 @@ def renew_hit_table(trials):
     for x in range(1, 22):
         for y in range(1, 11):
             if final_transcript_table[x][y] != 0:
-                print("flip")
                 count += 1
                 if float(final_win_transcript_table[x][y]) / final_transcript_table[x][y] < thresh_hold:
                     if hit_table[x][y] == '0':
@@ -264,6 +265,7 @@ def sim (trials = 5):
     global tmp_transcript_table
     global final_transcript_table
     global final_win_transcript_table
+    trial_summary = []
     initiate_hit_table()
     initiate_transcript()
     get_hit_table()
@@ -291,7 +293,6 @@ def sim (trials = 5):
         hit_val = []
         val = playerHand.get_value()
         isHit = hitme(val, houseFaceValue)
-        print (isHit)
         while isHit:
             hit_val.append(val)
             playerHand.add_card(theDeck.deal_card())
@@ -325,7 +326,6 @@ def sim (trials = 5):
             if win:
                 winNum += 1
                 for val in hit_val:
-                    print "-1"
                     final_win_transcript_table[val][houseFaceValue] += 1
                     final_transcript_table[val][houseFaceValue] += 1
             else:
@@ -343,6 +343,5 @@ def sim (trials = 5):
                     output.write("0 ")
             output.write ("\n")
 
-#sim(10000)
+#sim(100000)
 print(play(10000))
-

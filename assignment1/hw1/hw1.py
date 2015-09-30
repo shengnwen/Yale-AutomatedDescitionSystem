@@ -13,7 +13,7 @@ import random
 hit_table = []
 final_win_transcript_table = []
 final_transcript_table = []
-thresh_hold = 0.5
+thresh_hold = 0.40
 def hitme (playerhand = 12, dealerfacecard = 1):
     global hit_table
     if len(hit_table) == 0:

@@ -122,8 +122,6 @@ def initiate_hit_table():
                     continue
                 if x <= 11:
                     output.write("1 ")
-                elif x <= 16 and y >= 7:
-                    output.write("1 ")
                 else:
                     output.write("0 ")
             output.write("\n")
@@ -323,14 +321,19 @@ def sim (trials = 5):
                     win = False
                 finished = True
         if finished:
+            outcome = ""
             if win:
                 winNum += 1
+                outcome = "Win"
                 for val in hit_val:
                     final_win_transcript_table[val][houseFaceValue] += 1
                     final_transcript_table[val][houseFaceValue] += 1
             else:
+                outcome = "Lose"
                 for val in hit_val:
                     final_transcript_table[val][houseFaceValue] += 1
+            result = "Round" + str(trialTotal) + ":" + outcome + "\n--player:" + str(playerHand) + "\n" + "--dealer:" + str(houseHand)
+            trial_summary.append(result)
 #    print_table(hit_table)
     print("success rate:" + str(float(winNum) / float(trials)))
     store_hit_table()
@@ -342,6 +345,9 @@ def sim (trials = 5):
                 else:
                     output.write("0 ")
             output.write ("\n")
+    with open("summary", "w") as output:
+        for line in trial_summary:
+            output.write(line + "\n")
 
 #sim(100000)
 print(play(10000))

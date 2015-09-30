@@ -120,7 +120,7 @@ def initiate_hit_table():
                 if y == 0:
                     output.write("| ")
                     continue
-                if x < 11:
+                if x <= 11:
                     output.write("1 ")
                 else:
                     output.write("0 ")
@@ -233,15 +233,20 @@ def renew_hit_table(trials):
     global thresh_hold
     global tmp_transcript_table, final_transcript_table, final_win_transcript_table
     global hit_table
+    count = 0
     for x in range(1, 22):
         for y in range(1, 11):
             if final_transcript_table[x][y] != 0:
                 print("flip")
+                count += 1
                 if float(final_win_transcript_table[x][y]) / final_transcript_table[x][y] < thresh_hold:
                     if hit_table[x][y] == '0':
                         hit_table[x][y] = '1'
                     else:
                         hit_table[x][y] = '0'
+    if count == 0:
+        thresh_hold += 0.01
+
 
 def store_hit_table():
     global hit_table
@@ -338,6 +343,6 @@ def sim (trials = 5):
                     output.write("0 ")
             output.write ("\n")
 
-#sim(100000)
-print(play(1000))
+#sim(1000000)
+print(play(10000))
 

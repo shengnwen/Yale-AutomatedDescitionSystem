@@ -350,4 +350,4 @@ def sim (trials = 5):
             output.write(line + "\n")
 
 #sim(100000)
-print(play(10000))
+#print(play(10000))

@@ -11,18 +11,18 @@ import random
 # > 45 hit
 # >
 hit_table = []
-tmp_transcript_table = []
+final_win_transcript_table = []
 final_transcript_table = []
-thresh_hold = 0.23
+thresh_hold = 0.40
 def hitme (playerhand = 12, dealerfacecard = 1):
     global hit_table
-    get_hit_table()
+    if len(hit_table) == 0:
+        get_hit_table()
     return hit_table[playerhand][dealerfacecard] == '1'
 
 # return a float number
 def play(trials = 5):
     global hit_table
-    global tmp_transcript_table
     global final_transcript_table
     get_hit_table()
     trialTotal = 0
@@ -120,24 +120,16 @@ def initiate_hit_table():
                 if y == 0:
                     output.write("| ")
                     continue
-                if random.random() <= 0.8:
-                    output.write("0 ")
-                else:
+                if x <= 11:
                     output.write("1 ")
+                else:
+                    output.write("0 ")
             output.write("\n")
 
 def initiate_transcript():
-    global final_transcript_table, tmp_transcript_table
-    tmp_transcript_table = []
+    global final_transcript_table,  final_win_transcript_table
     final_transcript_table = []
-    for x in xrange(0, 22):
-        line = []
-        for y in xrange(0, 11):
-            if x == 0 or y == 0:
-                line.append("-")
-            else:
-                line.append(0)
-        tmp_transcript_table.append(line)
+    final_win_transcript_table = []
     for x in xrange(0, 22):
         line = []
         for y in xrange(0, 11):
@@ -146,6 +138,14 @@ def initiate_transcript():
             else:
                 line.append(0)
         final_transcript_table.append(line)
+    for x in xrange(0, 22):
+        line = []
+        for y in xrange(0, 11):
+            if x == 0 or y == 0:
+                line.append("-")
+            else:
+                line.append(0)
+        final_win_transcript_table.append(line)
 
 
 
@@ -231,18 +231,21 @@ class Deck:
 
 def renew_hit_table(trials):
     global thresh_hold
-    global tmp_transcript_table
+    global tmp_transcript_table, final_transcript_table, final_win_transcript_table
     global hit_table
+    count = 0
     for x in range(1, 22):
         for y in range(1, 11):
-            if tmp_transcript_table[x][y] != 0:
-                if float(tmp_transcript_table[x][y]) / trials < thresh_hold:
+            if final_transcript_table[x][y] != 0:
+                count += 1
+                if float(final_win_transcript_table[x][y]) / final_transcript_table[x][y] < thresh_hold:
                     if hit_table[x][y] == '0':
                         hit_table[x][y] = '1'
                     else:
                         hit_table[x][y] = '0'
-    # if thresh_hold < 0.42:
-    #     thresh_hold += 0.01
+    if count == 0:
+        thresh_hold += 0.01
+
 
 def store_hit_table():
     global hit_table
@@ -259,7 +262,9 @@ def sim (trials = 5):
     global hit_table
     global tmp_transcript_table
     global final_transcript_table
-    # initiate_hit_table()
+    global final_win_transcript_table
+    trial_summary = []
+    initiate_hit_table()
     initiate_transcript()
     get_hit_table()
     trialTotal = 0
@@ -277,8 +282,7 @@ def sim (trials = 5):
         houseFaceValue = VALUES[houseFaceCard.get_rank()]
         houseHand.add_card(houseFaceCard)
         trialTotal += 1
-        if trialTotal >= trials/10 and trialTotal % 50 == 0:
-#            print("Round:" + str(trialTotal))
+        if trialTotal >= 400 and trialTotal % 30 == 0:
             renew_hit_table(trials)
         # print("Player:" + str(playerHand)),
         # print("House face:" + str(houseFaceValue))
@@ -317,24 +321,33 @@ def sim (trials = 5):
                     win = False
                 finished = True
         if finished:
+            outcome = ""
             if win:
                 winNum += 1
+                outcome = "Win"
                 for val in hit_val:
-                    tmp_transcript_table[val][houseFaceValue] += 1
+                    final_win_transcript_table[val][houseFaceValue] += 1
                     final_transcript_table[val][houseFaceValue] += 1
             else:
+                outcome = "Lose"
                 for val in hit_val:
-                    tmp_transcript_table[val][houseFaceValue] -= 1
+                    final_transcript_table[val][houseFaceValue] += 1
+            result = "Round" + str(trialTotal) + ":" + outcome + "\n--player:" + str(playerHand) + "\n" + "--dealer:" + str(houseHand)
+            trial_summary.append(result)
 #    print_table(hit_table)
-#    print_table(tmp_transcript_table, True)
-#    print("success rate:" + str(float(winNum) / float(trials)))
+    print("success rate:" + str(float(winNum) / float(trials)))
     store_hit_table()
     with open("transcript", "w") as output:
         for x in xrange (1, 22):
             for y in xrange (1, 11):
-                output.write(str(float(final_transcript_table[x][y]) / trials) + " ")
+                if final_transcript_table[x][y] != 0:
+                    output.write(str(float(final_win_transcript_table[x][y]) / final_transcript_table[x][y]) + " ")
+                else:
+                    output.write("0 ")
             output.write ("\n")
+    with open("summary", "w") as output:
+        for line in trial_summary:
+            output.write(line + "\n")
 
-#sim(10000)
+#sim(100000)
 #print(play(10000))
-

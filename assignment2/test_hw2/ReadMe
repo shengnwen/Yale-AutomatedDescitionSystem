@@ -1,0 +1,79 @@
+## CS 458/558
+## Fall 2015
+## author: Kun Ren
+## email:  kun.ren@yale.edu
+
+
+###### Description
+This is a sample test for your hw2.
+Note that since there is no single answer to sensitivity and explain functions, this test will only check the function signature of these two functions, but I will check with your code and ReadMe file.
+Also: You can earn most of the credit by doing well on stages 1 and 2.
+
+
+###### Specification
+0. Please look at this spreadsheet carefully to see how to calculate the npv
+https://docs.google.com/spreadsheets/d/1ZGXtz2DA9F9cLPoc2P67yk2G4duiTuoY2QiYtxOUq0U/edit#gid=0
+
+Please don't change the function in Python:
+    def __str__(self):
+        return ("#<option location: " + self.location + 
+            " cost: " + str(self.cost) + ">")
+
+Please don't change the function in R:
+
+            show = function() {
+              'Method for displaying options'
+              cat("This is an option\n")
+              cat("Location: ", location)
+              cat("\nCost: ", cost)
+              cat("\nYears to complete: ", yearstocomplete)
+              cat("\nLifetime: ", lifetime)
+              cat("\nDiscount: ", discount)
+              cat("\nUnion: ", union)
+              cat("\nCost per car: ", costpercar)
+              cat("\nRevenue per car: ", revenuepercar)
+              cat("\nMonthly output: ", monthlyoutput, "\n")              
+            },
+
+1. npv (option)
+input: an option
+return: a float number.
+print: nothing.
+This function performs npv calculation, and return the npv.
+
+2. decide(option_list)
+input: a list of options
+return: an option which is preferable
+print: nothing
+This function performs npv calculation for all options in the list, and return the option that have the greatest npv
+
+3. sensitivity (option_list)
+input: a list of options
+return: an option which you think is preferable
+print: nothing.
+This function does the sensitivity analysis.
+
+3. explain (option_list, stakeholder list)
+input: the first parameter is a list of options, the second parameter is a list of stakeholder
+return: an decision object
+print: nothing.
+This function does the explanation to stakeholders
+
+###### Submission
+1. hw2.py or hw2.R
+2. ReadMe: Explains what strategy you used in sensitivity and explain() function or how do you implemented thest two functions
+
+
+###### How to test
+1. Put your hw2.py or hw2.R in the test directory
+2. After that, the test directory should look like
+./hw2.py or ./hw1.R
+./grade_hw2.py
+3. run
+>> python grade_hw2.py
+
+
+###### Dependent
+This test script requires:
+1. "os", "re", "subprocess", "shlex" and "time" package in Python
+2. "Rscript" been installed on the computer

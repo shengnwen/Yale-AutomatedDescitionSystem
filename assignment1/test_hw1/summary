@@ -1,0 +1,9 @@
+Round1:Win
+--player:Hand contains (S 9) (D T) 
+--dealer:Hand contains (C 3) (C 2) (D Q) (D A) (H J) 
+Round2:Lose
+--player:Hand contains (C 8) (C Q) 
+--dealer:Hand contains (S 3) (H 4) (D 4) (S 8) 
+Round3:Win
+--player:Hand contains (H 3) (C 4) (S 4) (C 8) 
+--dealer:Hand contains (D 7) (C 5) (C 3) (H 7) 

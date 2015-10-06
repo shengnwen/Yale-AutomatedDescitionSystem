@@ -1,0 +1,31 @@
+# 1. data structures
+    Card: keep record of card type and value
+    Hand: store house and player's card
+    hit_table: keep hit_me strategy
+    final_transcript_table: store the occurence number of each [value][face] pair
+    final_win_transcript_table: store the winning number of each [value][face] pair
+# 2. functions
+    def play(trials = 5):
+        use the existing hit_table to play game and record winning number
+    def sim(trial = 5):
+        play 400 games to get the initial winning rate, then after each 20 game renew the table and store the summay
+    def hitme():
+        return hit/stand result
+
+    *auxiliary functions:
+    def get_hit_table(): read the table file to get the existing hit_table
+    def initiate_transcript(): initiate final_transcript_table, final_win_transcript_table to '0'
+    def print_table: auxiliary function for print table data
+    def initiate_hit_table(): initiate table, val under or equal to 11 to '1'(hit); val above 11 to '0'(stand)
+    def renew_hit_table(): when the winning rate under 0.4, flip the value of hit_table
+    def store_hit_table(): store the existing table to file
+
+# 3. strategy:
+    1. initiate the hit_table by setting [val][face] pairs:
+        when val <= 11, set to '1' (hit);
+        otherwise set to '0'(stand)
+    2. first play 400 times without changing the table to get the initial state of winning-rate
+    3. after, when play each 20 games, renew the hit talbe
+
+
+

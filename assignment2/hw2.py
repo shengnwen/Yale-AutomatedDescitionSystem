@@ -208,59 +208,99 @@ def decide(option_list):
         return bestOption
 
 def sensitivity(option_list):
+    if len(option_list) == 0:
+        return None
     generatedOptions = []
+    optionScore = []
+    optionWeight = [0.08, 0.12, 0.10, 0.10, 0.09, 0.11, 0.10, 0.10, 0.12, 0.08]
     for cur_option in option_list:
-        # low cost
-        generatedOptions.append(option(cur_option.get_location(), cur_option.get_cost() * 0.8, cur_option.get_yearstocomplete(),
+        score = 0
+        # low cost * weight 0.08
+
+        lowCostOption = option(cur_option.get_location(), cur_option.get_cost() * 0.8, cur_option.get_yearstocomplete(),
                                        cur_option.get_lifetime(), cur_option.get_discount(), cur_option.get_union(),
                                        cur_option.get_costpercar(), cur_option.get_revenuepercar(),
-                                       cur_option.get_monthlyoutput()));
-        # hight cost
-        generatedOptions.append(option(cur_option.get_location(), cur_option.get_cost() * 1.2, cur_option.get_yearstocomplete(),
+                                       cur_option.get_monthlyoutput())
+        score += npv(lowCostOption) * optionWeight[0]
+        generatedOptions.append(lowCostOption)
+        # hight cost weight 0.12
+        highCostOption = option(cur_option.get_location(), cur_option.get_cost() * 1.2, cur_option.get_yearstocomplete(),
                                        cur_option.get_lifetime(), cur_option.get_discount(), cur_option.get_union(),
                                        cur_option.get_costpercar(), cur_option.get_revenuepercar(),
-                                       cur_option.get_monthlyoutput()));
-        # low discount
-        generatedOptions.append(option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
+                                       cur_option.get_monthlyoutput())
+        score += npv(highCostOption) * optionWeight[1]
+        generatedOptions.append(highCostOption)
+
+        # low discount 0.10
+        lowDiscountOption = option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
                                        cur_option.get_lifetime(), cur_option.get_discount()*0.8, cur_option.get_union(),
                                        cur_option.get_costpercar(), cur_option.get_revenuepercar(),
-                                       cur_option.get_monthlyoutput()));
-        # high discount
-        generatedOptions.append(option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
+                                       cur_option.get_monthlyoutput())
+        score += npv(lowDiscountOption) * optionWeight[2]
+        generatedOptions.append(lowDiscountOption)
+
+        # high discount 0.10
+        highDiscountOption = option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
                                        cur_option.get_lifetime(), cur_option.get_discount()*1.2, cur_option.get_union(),
                                        cur_option.get_costpercar(), cur_option.get_revenuepercar(),
-                                       cur_option.get_monthlyoutput()));
-        # low cost per car
-        generatedOptions.append(option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
+                                    cur_option.get_monthlyoutput())
+        score += npv(highDiscountOption) * optionWeight[3]
+        generatedOptions.append(highDiscountOption)
+
+        # low cost per car 0.09
+        lowCostPerCarOption = option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
                                        cur_option.get_lifetime(), cur_option.get_discount(), cur_option.get_union(),
                                        cur_option.get_costpercar() * 0.8, cur_option.get_revenuepercar(),
-                                       cur_option.get_monthlyoutput()));
-        # high cost per car
-        generatedOptions.append(option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
+                                       cur_option.get_monthlyoutput())
+        score += npv(lowCostPerCarOption) * optionWeight[4]
+        generatedOptions.append(lowCostPerCarOption)
+        # high cost per car 0.11
+        highCostPerCarOption = option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
                                        cur_option.get_lifetime(), cur_option.get_discount(), cur_option.get_union(),
                                        cur_option.get_costpercar() * 1.2, cur_option.get_revenuepercar(),
-                                       cur_option.get_monthlyoutput()));
-        # low revenue per car
-        generatedOptions.append(option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
+                                       cur_option.get_monthlyoutput())
+        score += npv(highCostPerCarOption) * optionWeight[5]
+        generatedOptions.append(highCostPerCarOption)
+        # low revenue per car 0.10
+        lowRevenueOption = option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
                                        cur_option.get_lifetime(), cur_option.get_discount(), cur_option.get_union(),
                                        cur_option.get_costpercar(), cur_option.get_revenuepercar() * 0.8,
-                                       cur_option.get_monthlyoutput()));
-        # high revenue per car
-        generatedOptions.append(option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
+                                       cur_option.get_monthlyoutput())
+        score += npv(lowRevenueOption) * optionWeight[6]
+        generatedOptions.append(lowRevenueOption)
+        # high revenue per car 0.10
+        highRevenueOption = option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
                                        cur_option.get_lifetime(), cur_option.get_discount(), cur_option.get_union(),
                                        cur_option.get_costpercar(), cur_option.get_revenuepercar() * 1.2,
-                                       cur_option.get_monthlyoutput()));
-        # low monthly output
-        generatedOptions.append(option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
+                                       cur_option.get_monthlyoutput())
+        score += npv(highRevenueOption) * optionWeight[7]
+        generatedOptions.append(highRevenueOption)
+        # low monthly output 0.12
+        lowOutputOption = option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
                                        cur_option.get_lifetime(), cur_option.get_discount(), cur_option.get_union(),
                                        cur_option.get_costpercar(), cur_option.get_revenuepercar(),
-                                       cur_option.get_monthlyoutput() * 0.8));
-        # high monthly output
-        generatedOptions.append(option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
+                                       cur_option.get_monthlyoutput() * 0.8)
+        score += npv(lowOutputOption) * optionWeight[8]
+        generatedOptions.append(lowOutputOption)
+        # high monthly output 0.08
+        highOutputOption = option(cur_option.get_location(), cur_option.get_cost(), cur_option.get_yearstocomplete(),
                                        cur_option.get_lifetime(), cur_option.get_discount(), cur_option.get_union(),
                                        cur_option.get_costpercar(), cur_option.get_revenuepercar(),
-                                       cur_option.get_monthlyoutput() * 1.2));
-    return decide(generatedOptions)
+                                       cur_option.get_monthlyoutput() * 1.2)
+        score += npv(highOutputOption) * optionWeight[9]
+        generatedOptions.append(highOutputOption)
+        optionScore.append(score)
+    i = 0
+    bestOption = 0
+    bestScore = optionScore[0]
+    while(i < len(optionScore)):
+        #print("option:" + str(i) + ":" + str(optionScore[i]))
+        if bestScore < optionScore[i]:
+            bestScore = optionScore[i]
+            bestOption = i
+        i = i + 1
+    return option_list[bestOption]
+    #return decide(generatedOptions)
 
 def explain(option_list, stakeholder_list = ""):
     des = decision(option_list, stakeholder_list)

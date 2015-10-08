@@ -1,0 +1,26 @@
+# hw2 NPV , id: ws362
+
+# functions Strategy
+# 1.For sensitivity function():
+     Strategy: 
+          *Equation: Score = sum of weight * npv(sub-option)*
+     Since its an multi-factor problem to choose the best option, I consider all the factors with different weight. And this weight table can be modified according to real industry environment.
+     In my hw2.py, the weight table is optionWeight = [0.08, 0.12, 0.10, 0.10, 0.09, 0.11, 0.10, 0.10, 0.12, 0.08].
+     I generated 10 sub options A1 - A10 for each option A in option list, then calculate its NPV value and multiplied with the weight factor as an subscore os S1 - S10 for the option. After, add all this S1 - S10 as the final score Score for the candidate option A in option list. When all score calculation is done, I will choose the option with the highest score and return this option in the final statement of this function.
+
+# 2.For explain function():
+     Strategy:
+         * Use Object Oriented Programming strategy, and implemented most of the logic in the decision class
+         * Find the best option for each stakeholders to their best interests (Thought this question is up to students and different option will require more coding work, i choose to implement each option for each stakeholders here. In other words, 4 stakeholders will have 4 options.)
+
+     2.1 When the stakeholder is ‘Stockholders’: then he may interests in NPV value most, so the best option returned will be the highest NPV one;
+
+     2.2 When the stakeholder is ‘Unions’: then he may interests in ‘union’ members’ benefits, so the best option will be the option employee union members with highest NPV. While there is no option with ‘union’ members, the just returned with highest NPV option and another explanation for them why the option without union members;
+
+     2.3 When the stakeholders is ’OH’: he want the option in ‘OH’ area, so the best option will be the option in OH with highest NPV value. However, if there is no choice in ‘OH’, we will just return with the highest NPV one and give extra explanation as why not in ‘OH’.
+
+     2.4 When the stakeholders is ’SC’: It’s the same situation as 2.3. We will return with the highest NPV one in ‘SC’. If there is no option in “SC”, we will instead give the highest NPV one and give extra explanation.
+     
+
+
+

@@ -24,9 +24,9 @@ def backtest (ticker = "HD", start = "2006-10-01", end = "2015-10-01", duration 
     total_gains = 0
     have_stock = False
     old_price = None
-    total_sum = 0
-    for single_day in historical_data:
-        total_sum += float(single_day['Adj_Close'])
+    # total_sum = 0
+    # for single_day in historical_data:
+    #     total_sum += float(single_day['Adj_Close'])
     while i + duration <= len(historical_data):
         sum = 0
         for single_day in historical_data[i: i+duration]:
@@ -190,3 +190,7 @@ def realbacktest (ticker = "HD", start = "2006-10-01", end = "2015-10-01", durat
 # print ' '.join(sector_info)
 # realbacktest(ticker = "AAPL", start = "2014-08-01", end = "2015-10-23", duration = 20, commission = 2, file = "test3")
 # realbacktest("AAPL", "2014-01-01", "2015-10-23", 20, 2,file="test3")
+# print backtest(ticker = "AAPL", start = "2015-05-01", end = "2015-10-23", duration = 20)
+# sectortest(startdates = ["2015-01-01", "2015-06-01"],enddates = ["2015-05-01", "2015-10-01"], durations = [20, 50], file = "test2")
+# realbacktest("AAPL", "2014-01-01", "2015-10-23", 20, 2,file="test3")
+# sectortest(startdates=['2014-01-01','2014-05-07','2015-01-03'],enddates=['2014-05-04','2014-07-10','2015-03-20'],durations=[10,20],file='file')
